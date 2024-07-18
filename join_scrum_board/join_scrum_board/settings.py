@@ -25,8 +25,16 @@ SECRET_KEY = 'django-insecure-_wkhq2+b(f3l)j^(pms*1%jm67x8r_tv!x@_j1%3v4-705@2-5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 
+CORS_ALLOW_ALL_ORIGINS = ['http://127.0.0.1:5500', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://localhost:8000' 'http://127.0.0.1:5500/login.html', 'http://localhost:5500/login.html']
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:5500', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://localhost:8000' 'http://127.0.0.1:5500/login.html', 'http://localhost:5500/login.html']
+
+CSRF_HEADER_NAME =['HTTP_X_CSRFTOKEN']
 
 # Application definition
 
@@ -45,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -126,3 +135,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

@@ -23,7 +23,7 @@ class Task(models.Model):
     due_date = models.DateField()
     priority = models.CharField(max_length=50)
     subtasks = Subtask
-    assigned_to = ArrayField()
+    #assigned_to = ArrayField()
     status = models.CharField(max_length=50)
     
 
