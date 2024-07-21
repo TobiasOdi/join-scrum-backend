@@ -29,5 +29,16 @@ class SubtaskItem(models.Model):
     def __str__(self):
         return f"({self.id}) {self.subtaskName}"
 
-class Assigned_to(models.Model):
+class AssignedContactItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
+    name = models.CharField(max_length=25)
+    surname = models.CharField(max_length=25)
+    contactColor = models.CharField(max_length=25)   
+
+class CategoryItem(models.Model):
+    categoryName = models.CharField(max_length=25)
+    color = models.CharField(max_length=25)
+    categoryType = models.CharField(max_length=25)
+    
+    def __str__(self):
+        return f"({self.id}) {self.categoryName}"

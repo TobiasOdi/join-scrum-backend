@@ -8,9 +8,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from main.models import UserAccount
 from django.contrib.auth.backends import BaseBackend
-from add_task.models import TaskItem, SubtaskItem
+from add_task.models import TaskItem, SubtaskItem, AssignedContactItem
 from rest_framework.views import APIView, Response
-from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer
+from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer
 
 # Create your views here.
 """ @csrf_exempt
@@ -67,7 +67,6 @@ def loginView(request):
                 "status": 2
             })
 
-
 class TasksView(APIView): 
     #authenticaiton_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated]
@@ -84,20 +83,18 @@ class SubtasksView(APIView):
     #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def get(self, request, format=None):
-        #tasks = TaskItem.objects.filter(created_by=request.user)
         subtasks = SubtaskItem.objects.filter(created_by=1)
         serializer = SubtaskItemSerializer(subtasks, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
 
-class AssignedToView(APIView): 
+class AssignedContactView(APIView): 
     #authenticaiton_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def get(self, request, format=None):
-        #tasks = TaskItem.objects.filter(created_by=request.user)
-        tasks = TaskItem.objects.filter(created_by=1)
-        serializer = TaskItemSerializer(tasks, many=True)
+        assignedContacts = AssignedContactItem.objects
+        serializer = AssignedContactItemSerializer(assignedContacts, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
      

@@ -81,6 +81,8 @@ TEMPLATES = [
     },
 ]
 
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
+
 WSGI_APPLICATION = 'join_scrum_board.wsgi.application'
 
 
