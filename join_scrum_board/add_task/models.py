@@ -6,24 +6,28 @@ from datetime import date
 from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
-
-class Subtask(models.Model):
-    subtaskName = models.CharField(max_length=50)
-    status = models.CharField(max_length=6)
-
-class Assigned_to(models.Model):
-    pass
-
-class Task(models.Model):
+class TaskItem(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = DateField(default=date.today)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=25)
     description = models.CharField(max_length=100)
-    category = models.CharField(max_length=50)
+    category = models.CharField(max_length=25)
     due_date = models.DateField()
-    priority = models.CharField(max_length=50)
-    subtasks = Subtask
+    priorityValue = models.CharField(max_length=10)
     #assigned_to = ArrayField()
-    status = models.CharField(max_length=50)
+    statusCategory = models.CharField(max_length=25, default='toDo')
     
+    def __str__(self):
+        return f"({self.id}) {self.title}"
 
+class SubtaskItem(models.Model):
+    parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
+    subtaskName = models.CharField(max_length=50)
+    status = models.CharField(max_length=6)
+    
+    def __str__(self):
+        return f"({self.id}) {self.subtaskName}"
+
+class Assigned_to(models.Model):
+    parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)

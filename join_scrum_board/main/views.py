@@ -8,6 +8,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from main.models import UserAccount
 from django.contrib.auth.backends import BaseBackend
+from add_task.models import TaskItem, SubtaskItem
+from rest_framework.views import APIView, Response
+from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer
 
 # Create your views here.
 """ @csrf_exempt
@@ -20,6 +23,7 @@ def loginView(request):
             user_serialized = serializers.serialize('json', [user])
             print(user_serialized)
             return JsonResponse(user_serialized[1:-1], safe=False) """
+
 
 @csrf_exempt
 def loginView(request):
@@ -50,6 +54,7 @@ def loginView(request):
                     "username": user.username,
                     "firstname": user.first_name,
                     "lastname": user.last_name,
+                    "email": user.email,
                     "userColor": userColor
                 })
                 
@@ -62,3 +67,37 @@ def loginView(request):
                 "status": 2
             })
 
+
+class TasksView(APIView): 
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def get(self, request, format=None):
+        #tasks = TaskItem.objects.filter(created_by=request.user)
+        tasks = TaskItem.objects.filter(created_by=1)
+        serializer = TaskItemSerializer(tasks, many=True)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+
+class SubtasksView(APIView): 
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def get(self, request, format=None):
+        #tasks = TaskItem.objects.filter(created_by=request.user)
+        subtasks = SubtaskItem.objects.filter(created_by=1)
+        serializer = SubtaskItemSerializer(subtasks, many=True)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+
+class AssignedToView(APIView): 
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def get(self, request, format=None):
+        #tasks = TaskItem.objects.filter(created_by=request.user)
+        tasks = TaskItem.objects.filter(created_by=1)
+        serializer = TaskItemSerializer(tasks, many=True)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+     
