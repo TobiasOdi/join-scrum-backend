@@ -10,7 +10,7 @@ from main.models import UserAccount
 from django.contrib.auth.backends import BaseBackend
 from add_task.models import TaskItem, SubtaskItem, AssignedContactItem
 from rest_framework.views import APIView, Response
-from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer
+from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer, UserAccountSerializer
 
 # Create your views here.
 """ @csrf_exempt
@@ -97,4 +97,13 @@ class AssignedContactView(APIView):
         serializer = AssignedContactItemSerializer(assignedContacts, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
-     
+
+class ContactsView(APIView): 
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def get(self, request, format=None):
+        contacts = UserAccount.objects
+        serializer = UserAccountSerializer(contacts, many=True)
+        print(Response(serializer.data))
+        return Response(serializer.data)

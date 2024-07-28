@@ -17,8 +17,8 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
-from main.views import loginView, TasksView, SubtasksView, AssignedContactView
-from add_task.views import CategoriesView, SaveTasksView
+from main.views import loginView, TasksView, SubtasksView, AssignedContactView, ContactsView
+from add_task.views import CategoriesView, SaveTaskCategoryView, SaveCreatedTaskView
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
@@ -28,5 +28,7 @@ urlpatterns = [
     path('subtasks/', SubtasksView.as_view()),
     path('assignedTo/', AssignedContactView.as_view()),
     path('categories/', CategoriesView.as_view()),
-    path('saveTask/', SaveTasksView.as_view()),
+    path('contacts/', ContactsView.as_view()),
+    path('saveTaskCategory/', SaveTaskCategoryView.as_view()),
+    path('saveCreatedTask/', SaveCreatedTaskView.as_view()),
 ]

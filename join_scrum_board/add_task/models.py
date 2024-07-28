@@ -42,3 +42,13 @@ class CategoryItem(models.Model):
     
     def __str__(self):
         return f"({self.id}) {self.categoryName}"
+    
+""" class ContactItem(models.Model):
+    name = models.CharField(max_length=25)
+    surname = models.CharField(max_length=25)
+    email = models.CharField(max_length=50)
+    phone = models.IntegerField(max_length=50)
+    contactColor = models.CharField(max_length=25)   
+    
+    def __str__(self):
+        return f"({self.id}) {self.email}" """
