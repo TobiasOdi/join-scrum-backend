@@ -1,5 +1,7 @@
 from add_task.models import TaskItem, SubtaskItem, CategoryItem, AssignedContactItem
 from main.models import UserAccount
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
 
 class TaskItemSerializer(serializers.ModelSerializer):
@@ -22,7 +24,12 @@ class CategoryItemSerializer(serializers.ModelSerializer):
         model = CategoryItem
         fields = "__all__"
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['pk', 'username', 'first_name', 'last_name', 'email']
+
 class UserAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ['user', 'username', 'first_name', 'last_name', 'email', 'color', 'phone']
+        fields = ['user', 'color', 'phone']

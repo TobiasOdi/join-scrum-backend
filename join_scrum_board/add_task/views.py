@@ -12,7 +12,7 @@ class CategoriesView(APIView):
     @csrf_exempt
     def get(self, request, format=None):
         #tasks = TaskItem.objects.filter(created_by=request.user)
-        categories = CategoryItem.objects
+        categories = CategoryItem.objects.all()
         serializer = CategoryItemSerializer(categories, many=True)
         return Response(serializer.data)
 
@@ -35,18 +35,18 @@ class SaveCreatedTaskView(APIView):
     def post(self, request):
         currentTask = json.loads(request.body)
         print(currentTask)
-        taskData = currentTask[0]['']
-        subtaskData = currentTask[0]['']
-        assignedToData = currentTask[0]['']
+        #taskData = currentTask[0]['']
+        #subtaskData = currentTask[0]['']
+        #assignedToData = currentTask[0]['']
 
-        TaskItem.objects.filter(pk=currentTask['id']).update(
+        #TaskItem.objects.filter(pk=currentTask['id']).update(
             #category=currentTask['category'],
             #created_at=currentTask['created_at'],
             #created_by=currentTask['created_by'],
             #description=currentTask['description'],
             #due_date=currentTask['due_date'],
             #priorityValue=currentTask['priorityValue'],
-            statusCategory=currentTask['statusCategory'],
+        #    statusCategory=currentTask['statusCategory'],
             #title=currentTask['title'],
-        )      
+        #)      
         return Response({ "status": "OK - New task created"})

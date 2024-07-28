@@ -10,7 +10,7 @@ from main.models import UserAccount
 from django.contrib.auth.backends import BaseBackend
 from add_task.models import TaskItem, SubtaskItem, AssignedContactItem
 from rest_framework.views import APIView, Response
-from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer, UserAccountSerializer
+from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer, UserSerializer, UserAccountSerializer
 
 # Create your views here.
 """ @csrf_exempt
@@ -73,7 +73,8 @@ class TasksView(APIView):
     @csrf_exempt
     def get(self, request, format=None):
         #tasks = TaskItem.objects.filter(created_by=request.user)
-        tasks = TaskItem.objects.filter(created_by=1)
+        #tasks = TaskItem.objects.filter(created_by=1)
+        tasks = TaskItem.objects.all()
         serializer = TaskItemSerializer(tasks, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
@@ -83,7 +84,8 @@ class SubtasksView(APIView):
     #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def get(self, request, format=None):
-        subtasks = SubtaskItem.objects.filter(created_by=1)
+        #subtasks = SubtaskItem.objects.filter(created_by=1)
+        subtasks = SubtaskItem.objects.all()
         serializer = SubtaskItemSerializer(subtasks, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
@@ -93,7 +95,7 @@ class AssignedContactView(APIView):
     #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def get(self, request, format=None):
-        assignedContacts = AssignedContactItem.objects
+        assignedContacts = AssignedContactItem.objects.all()
         serializer = AssignedContactItemSerializer(assignedContacts, many=True)
         print(Response(serializer.data))
         return Response(serializer.data)
@@ -103,7 +105,20 @@ class ContactsView(APIView):
     #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def get(self, request, format=None):
-        contacts = UserAccount.objects
-        serializer = UserAccountSerializer(contacts, many=True)
-        print(Response(serializer.data))
-        return Response(serializer.data)
+        contactsUserData1 = User.objects.all()
+        contactsUserData2 = UserAccount.objects.all()
+        serializer1 = UserSerializer(contactsUserData1, many=True)
+        serializer1Data = serializer1.data
+        serializer2 = UserAccountSerializer(contactsUserData2, many=True)
+        serializer2Data = serializer2.data
+
+        
+        #for user in serializer1:
+        #    if user['pk'] == serializer2Data['user'].find(user['pk']):
+        #        serializer1Data.update({"color": serializer2Data.color,
+        #                            "phone": serializer2Data.phone})
+                
+        userData = [{'users': serializer1.data},
+                    {'userAccounts': serializer2.data}]
+        
+        return Response(userData)
