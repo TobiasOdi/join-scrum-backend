@@ -9,5 +9,5 @@ class UserAccount(models.Model):
     phone = models.CharField(max_length=25, blank=True, default=None)
     
     def __str__(self):
-        return self.user.username
+        return self.user
     

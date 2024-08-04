@@ -4,6 +4,8 @@ from django.db.models.fields import DateField
 from datetime import date
 #from json_field import JSONField
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class TaskItem(models.Model):
@@ -22,7 +24,7 @@ class TaskItem(models.Model):
 
 class SubtaskItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
+    #created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     subtaskName = models.CharField(max_length=50)
     status = models.CharField(max_length=6)
     
@@ -31,8 +33,9 @@ class SubtaskItem(models.Model):
 
 class AssignedContactItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
-    name = models.CharField(max_length=25)
-    surname = models.CharField(max_length=25)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
     contactColor = models.CharField(max_length=25)   
 
 class CategoryItem(models.Model):
@@ -44,8 +47,8 @@ class CategoryItem(models.Model):
         return f"({self.id}) {self.categoryName}"
     
 """ class ContactItem(models.Model):
-    name = models.CharField(max_length=25)
-    surname = models.CharField(max_length=25)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
     email = models.CharField(max_length=50)
     phone = models.IntegerField(max_length=50)
     contactColor = models.CharField(max_length=25)   

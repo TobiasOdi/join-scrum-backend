@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
+from django.template.context_processors import csrf
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -25,7 +26,7 @@ def loginView(request):
             return JsonResponse(user_serialized[1:-1], safe=False) """
 
 
-@csrf_exempt
+#@csrf_exempt
 def loginView(request):
     if request.method == 'POST':
         email = request.POST['email']

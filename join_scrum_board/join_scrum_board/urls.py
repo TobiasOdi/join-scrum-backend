@@ -18,7 +18,7 @@ from django.urls import include
 from django.contrib import admin
 from django.urls import path
 from main.views import loginView, TasksView, SubtasksView, AssignedContactView, ContactsView
-from add_task.views import CategoriesView, SaveTaskCategoryView, SaveCreatedTaskView
+from add_task.views import CategoriesView, SaveTaskCategoryView, SaveCreatedTaskView, SaveEditedTaskView
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('contacts/', ContactsView.as_view()),
     path('saveTaskCategory/', SaveTaskCategoryView.as_view()),
     path('saveCreatedTask/', SaveCreatedTaskView.as_view()),
+    path('saveEditedTask/', SaveEditedTaskView.as_view()),
 ]
