@@ -1,3 +1,50 @@
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
+import json
+from rest_framework.views import APIView, Response# Create your views here.
+from contacts.models import ContactItem
 # Create your views here.
+class SaveCreatedContactView(APIView):
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def post(self, request):
+        currentContact = json.loads(request.body)
+        print('currentContact', currentContact)
+       
+        #contactData = currentContact[0]['taskData']
+        
+        ContactItem.objects.create(
+            first_name=currentContact['first_name'], 
+            last_name=currentContact['last_name'],
+            email=currentContact['email'],
+            phone=currentContact['phone'],
+            color=currentContact['color'],
+        )
+        
+        return Response({ "status": "OK - New contact created"})
+      
+class SaveChangedContactView(APIView):
+#authenticaiton_classes = [TokenAuthentication]
+#permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def post(self, request):
+        currentContact = json.loads(request.body)
+        print('currentContact', currentContact)
+        print("JSON", currentContact['id'])
+        
+        ContactItem.objects.filter(pk=currentContact['id']).update(
+            first_name=currentContact['first_name'],
+            last_name=currentContact['last_name'],
+            email=currentContact['email'],
+            phone=currentContact['phone']
+        )      
+        return Response({ "status": "OK - Status category updated"})
+
+    
+    
+    
+    
+    
+    
+    

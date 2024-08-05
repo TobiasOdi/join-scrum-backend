@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 class UserAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
     color = models.CharField(max_length=25, blank=False, default=None)
-    phone = models.CharField(max_length=25, blank=True, default=None)
+    phone = models.IntegerField(blank=True, default=None)
     
     def __str__(self):
-        return self.user
+        return self.color
     

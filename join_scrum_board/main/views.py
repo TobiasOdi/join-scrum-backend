@@ -10,8 +10,10 @@ from django.contrib.auth.models import User
 from main.models import UserAccount
 from django.contrib.auth.backends import BaseBackend
 from add_task.models import TaskItem, SubtaskItem, AssignedContactItem
+from contacts.models import ContactItem
 from rest_framework.views import APIView, Response
 from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer, UserSerializer, UserAccountSerializer
+from contacts.serializers import ContactItemSerializer
 
 # Create your views here.
 """ @csrf_exempt
@@ -104,8 +106,16 @@ class AssignedContactView(APIView):
 class ContactsView(APIView): 
     #authenticaiton_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated]
+        
     @csrf_exempt
     def get(self, request, format=None):
+        contacts = ContactItem.objects.all()
+        serializer = ContactItemSerializer(contacts, many=True)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+    
+    #@csrf_exempt
+    #def get(self, request, format=None):
         contactsUserData1 = User.objects.all()
         contactsUserData2 = UserAccount.objects.all()
         serializer1 = UserSerializer(contactsUserData1, many=True)
@@ -119,7 +129,7 @@ class ContactsView(APIView):
         #        serializer1Data.update({"color": serializer2Data.color,
         #                            "phone": serializer2Data.phone})
                 
-        userData = [{'users': serializer1.data},
-                    {'userAccounts': serializer2.data}]
+        #userData = [{'users': serializer1.data},
+        #            {'userAccounts': serializer2.data}]
         
-        return Response(userData)
+        #return Response(userData)

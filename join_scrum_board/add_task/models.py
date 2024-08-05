@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class TaskItem(models.Model):
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_by = models.CharField(max_length=25, default=None)
     created_at = DateField(default=date.today)
     title = models.CharField(max_length=25)
     description = models.CharField(max_length=100)
@@ -17,7 +18,7 @@ class TaskItem(models.Model):
     due_date = models.DateField()
     priorityValue = models.CharField(max_length=10)
     #assigned_to = ArrayField()
-    statusCategory = models.CharField(max_length=25, default='toDo')
+    statusCategory = models.CharField(max_length=25)
     
     def __str__(self):
         return f"({self.id}) {self.title}"
@@ -33,7 +34,8 @@ class SubtaskItem(models.Model):
 
 class AssignedContactItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
+    #user_id = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
+    user_id = models.CharField(max_length=25, default=None)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     contactColor = models.CharField(max_length=25)   

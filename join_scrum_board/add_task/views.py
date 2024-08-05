@@ -40,48 +40,37 @@ class SaveCreatedTaskView(APIView):
     @csrf_exempt
     def post(self, request):
         currentTask = json.loads(request.body)
-        print('currentTask',currentTask)
-        #serialized_obj = serializers.serialize('json', [currentTask])
-        #dict_currentTask = serialized_obj[1:-1]
-        #print(dict_currentTask)
-
+        print('currentTask', currentTask)
        
         taskData = currentTask[0]['taskData']
-        print('taskData', taskData)
         subtaskData = currentTask[0]['subtaskData']
-        print('subtaskData', subtaskData)
         assignedToData = currentTask[0]['assignedToData']
-        print('assignedToData', assignedToData)
         
-        loggedInUser = User.objects.all()
-        print('LOGGED IN USER', loggedInUser)
-
         newTask = TaskItem.objects.create(
             category=taskData[0]['category'], 
-            created_by=loggedInUser,
+            created_by=1,
             description=taskData[0]['description'],
             due_date=taskData[0]['due_date'],
             priorityValue=taskData[0]['priorityValue'],
             statusCategory=taskData[0]['statusCategory'],
             title=taskData[0]['title']
             )
-        print('NEW TASK', newTask)
 
-        newSubtasks = SubtaskItem.objects.create(
-            parent_task_id=newTask,
-            status=subtaskData[0]['status'], 
-            subtaskName=subtaskData[0]['subtaskName']
+        for subtask in subtaskData: 
+            SubtaskItem.objects.create(
+                parent_task_id=newTask,
+                status=subtask['status'], 
+                subtaskName=subtask['subtaskName']
             )
-        print('NEW SUBTASK', newTask)
 
-        newAssignedContacts = AssignedContactItem.objects.create(
-            parent_task_id=newTask,
-            contactColor=assignedToData[0]['contactColor'], 
-            first_name=assignedToData[0]['first_name'],
-            last_name=assignedToData[0]['last_name'],
-            user_id=assignedToData[0]['user_id']
+        for assignedContact in assignedToData:
+            AssignedContactItem.objects.create(
+                parent_task_id=newTask,
+                contactColor=assignedContact['contactColor'], 
+                first_name=assignedContact['first_name'],
+                last_name=assignedContact['last_name'],
+                user_id=assignedContact['user_id']
             )
-        print('NEW ASSIGNED USER', newTask)
 
         return Response({ "status": "OK - New task created"})
     
@@ -91,19 +80,40 @@ class SaveEditedTaskView(APIView):
     @csrf_exempt
     def post(self, request):
         currentTask = json.loads(request.body)
-        print(currentTask)
-        #taskData = currentTask[0]['']
-        #subtaskData = currentTask[0]['']
-        #assignedToData = currentTask[0]['']
+        print('currentTask', currentTask)
+        
+        taskData = currentTask[0]['taskData']
+        subtaskData = currentTask[0]['subtaskData']
+        assignedToData = currentTask[0]['assignedToData']
 
-        #TaskItem.objects.filter(pk=currentTask['id']).update(
-            #category=currentTask['category'],
-            #created_at=currentTask['created_at'],
-            #created_by=currentTask['created_by'],
-            #description=currentTask['description'],
-            #due_date=currentTask['due_date'],
-            #priorityValue=currentTask['priorityValue'],
-        #    statusCategory=currentTask['statusCategory'],
-            #title=currentTask['title'],
-        #)      
+        TaskItem.objects.filter(pk=taskData[0]['id']).update(
+            category=taskData[0]['category'], 
+            description=taskData[0]['description'],
+            due_date=taskData[0]['due_date'],
+            priorityValue=taskData[0]['priorityValue'],
+            statusCategory=taskData[0]['statusCategory'],
+            title=taskData[0]['title']
+        )  
+        
+        # DELETE ALL SUBTASKS AND ASSIGNED CONTACTS THAT REFER TO THE CURRENT TASK
+        SubtaskItem.objects.filter(id=taskData[0]['id']).delete()
+        AssignedContactItem.objects.filter(parent_task_id=taskData[0]['id']).delete()
+
+        # ADD NEW SUBTASKS AND ASSIGNED CONTACTS
+        for subtask in subtaskData: 
+            SubtaskItem.objects.create(
+                parent_task_id=taskData[0]['id'],
+                status=subtask['status'], 
+                subtaskName=subtask['subtaskName']
+            )
+
+        for assignedContact in assignedToData:
+            AssignedContactItem.objects.create(
+                parent_task_id=taskData[0]['id'],
+                contactColor=assignedContact['contactColor'], 
+                first_name=assignedContact['first_name'],
+                last_name=assignedContact['last_name'],
+                user_id=assignedContact['user_id']
+            )
+            
         return Response({ "status": "OK - Task edited"})
