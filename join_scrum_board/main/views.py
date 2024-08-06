@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.template.context_processors import csrf
 from django.core import serializers
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -14,6 +14,7 @@ from contacts.models import ContactItem
 from rest_framework.views import APIView, Response
 from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, AssignedContactItemSerializer, UserSerializer, UserAccountSerializer
 from contacts.serializers import ContactItemSerializer
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 
 # Create your views here.
 """ @csrf_exempt
@@ -29,7 +30,9 @@ def loginView(request):
 
 
 #@csrf_exempt
+@ensure_csrf_cookie
 def loginView(request):
+    #authenticaiton_classes = [TokenAuthentication]
     if request.method == 'POST':
         email = request.POST['email']
         upass = request.POST['password']

@@ -28,20 +28,20 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     'localhost:5500',
+    'http://localhost:5500',
     '127.0.0.1',
-    '127.0.0.1:5500'
+    '127.0.0.1:5500',
+    'http://127.0.0.1:5500',
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost', 
-    'http://127.0.0.1', 
-    'http://127.0.0.1:5500', 
-    'http://127.0.0.1:8000', 
     'http://localhost:5500', 
-    'http://localhost:8000' 
+    'http://127.0.0.1', 
+    'http://127.0.0.1:5500',
 ]
+
 CORS_ALLOW_ALL_ORIGINS = False
-#CORS_ALLOW_ALL_ORIGINS = ['http://127.0.0.1:5500/', 'http://127.0.0.1:5500', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://localhost:8000' 'http://127.0.0.1:5500/login.html', 'http://localhost:5500/login.html']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:5500/','http://127.0.0.1:5500', 'http://127.0.0.1:8000', 'http://localhost:5500', 'http://localhost:8000' 'http://127.0.0.1:5500/login.html', 'http://localhost:5500/login.html']
+
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
@@ -50,6 +50,7 @@ CORS_ALLOW_METHODS = (
     "POST",
     "PUT",
 )
+
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
@@ -57,15 +58,28 @@ CORS_ALLOW_HEADERS = (
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
-    "X-CSRF-Token"
+    "X-CSRF-Token",
+    "X-CSRFToken",
 )
-CSRF_HEADER_NAME =['X-CSRF-Token']
+
+CSRF_HEADER_NAME =['X-CSRFToken', 'X-CSRF-Token']
+CSRF_COOKIE_DOMAIN = 'http://127.0.0.1:5500'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost',
+    'http://127.0.0.1:5500/',
+    'http://127.0.0.1:5500', 
+    'http://localhost:5500', 
+    'http://127.0.0.1:5500/login.html', 
+    'http://localhost:5500/login.html'
+    ]
 
 # Application definition
 
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

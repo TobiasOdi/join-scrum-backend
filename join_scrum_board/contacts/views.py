@@ -25,8 +25,8 @@ class SaveCreatedContactView(APIView):
         return Response({ "status": "OK - New contact created"})
       
 class SaveChangedContactView(APIView):
-#authenticaiton_classes = [TokenAuthentication]
-#permission_classes = [IsAuthenticated]
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
     @csrf_exempt
     def post(self, request):
         currentContact = json.loads(request.body)
