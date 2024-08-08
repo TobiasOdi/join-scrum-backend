@@ -20,6 +20,7 @@ class SaveCreatedContactView(APIView):
             email=currentContact['email'],
             phone=currentContact['phone'],
             color=currentContact['color'],
+            active_user=None
         )
         
         return Response({ "status": "OK - New contact created"})
@@ -40,6 +41,18 @@ class SaveChangedContactView(APIView):
             phone=currentContact['phone']
         )      
         return Response({ "status": "OK - Status category updated"})
+
+class DeleteContactView(APIView):
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def post(self, request):
+        currentContact = json.loads(request.body)
+        print('currentContact', currentContact)
+        
+        if currentContact['active_user'] == None:
+            ContactItem.objects.filter(id=currentContact['id']).delete()
+            return Response({ "status": "OK - Contact deleted"})
 
     
     

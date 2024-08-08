@@ -17,14 +17,14 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
-from main.views import loginView, TasksView, SubtasksView, AssignedContactView, ContactsView
-from add_task.views import CategoriesView, SaveTaskCategoryView, SaveCreatedTaskView, SaveEditedTaskView
-from contacts.views import SaveCreatedContactView, SaveChangedContactView
+from main.views import LoginView, TasksView, SubtasksView, AssignedContactView, ContactsView
+from add_task.views import CategoriesView, SaveTaskCategoryView, SaveCreatedTaskView, SaveEditedTaskView, SaveCreatedCategoryView, DeleteCategoryView
+from contacts.views import SaveCreatedContactView, SaveChangedContactView, DeleteContactView
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
-    path('login/', loginView),
+    path('login/', LoginView.as_view()),
     path('tasks/', TasksView.as_view()),
     path('subtasks/', SubtasksView.as_view()),
     path('assignedTo/', AssignedContactView.as_view()),
@@ -35,4 +35,7 @@ urlpatterns = [
     path('saveEditedTask/', SaveEditedTaskView.as_view()),
     path('saveCreatedContact/', SaveCreatedContactView.as_view()),
     path('saveEditedContact/', SaveChangedContactView.as_view()),
+    path('deleteContact/', DeleteContactView.as_view()),    
+    path('saveCreatedCategory/', SaveCreatedCategoryView.as_view()),   
+    path('deleteCategory/', DeleteCategoryView.as_view()),   
 ]

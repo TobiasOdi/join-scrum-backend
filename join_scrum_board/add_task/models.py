@@ -5,7 +5,7 @@ from datetime import date
 #from json_field import JSONField
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
-
+from contacts.models import ContactItem
 
 # Create your models here.
 class TaskItem(models.Model):
@@ -17,7 +17,6 @@ class TaskItem(models.Model):
     category = models.CharField(max_length=25)
     due_date = models.DateField()
     priorityValue = models.CharField(max_length=10)
-    #assigned_to = ArrayField()
     statusCategory = models.CharField(max_length=25)
     
     def __str__(self):
@@ -25,7 +24,6 @@ class TaskItem(models.Model):
 
 class SubtaskItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
-    #created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     subtaskName = models.CharField(max_length=50)
     status = models.CharField(max_length=6)
     
@@ -34,11 +32,12 @@ class SubtaskItem(models.Model):
 
 class AssignedContactItem(models.Model):
     parent_task_id = models.ForeignKey(TaskItem, on_delete=models.CASCADE, default=None)
+    contact_id = models.ForeignKey(ContactItem, on_delete=models.CASCADE, default=None)
     #user_id = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
-    user_id = models.CharField(max_length=25, default=None)
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    contactColor = models.CharField(max_length=25)   
+    #user_id = models.CharField(max_length=25, default=None)
+    #first_name = models.CharField(max_length=25)
+    #last_name = models.CharField(max_length=25)
+    #contactColor = models.CharField(max_length=25)   
 
 class CategoryItem(models.Model):
     categoryName = models.CharField(max_length=25)
@@ -47,13 +46,3 @@ class CategoryItem(models.Model):
     
     def __str__(self):
         return f"({self.id}) {self.categoryName}"
-    
-""" class ContactItem(models.Model):
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    email = models.CharField(max_length=50)
-    phone = models.IntegerField(max_length=50)
-    contactColor = models.CharField(max_length=25)   
-    
-    def __str__(self):
-        return f"({self.id}) {self.email}" """

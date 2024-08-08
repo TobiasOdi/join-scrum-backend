@@ -16,24 +16,10 @@ from add_task.serializers import TaskItemSerializer, SubtaskItemSerializer, Assi
 from contacts.serializers import ContactItemSerializer
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 
-# Create your views here.
-""" @csrf_exempt
-def loginView(request):
-    if request.method == 'POST':
-        user = authenticate(username=request.POST.get('email'), password=request.POST.get('password'))
-        
-        if user:
-            login(request, user)
-            user_serialized = serializers.serialize('json', [user])
-            print(user_serialized)
-            return JsonResponse(user_serialized[1:-1], safe=False) """
-
-
-#@csrf_exempt
-@ensure_csrf_cookie
-def loginView(request):
+class LoginView(APIView):
     #authenticaiton_classes = [TokenAuthentication]
-    if request.method == 'POST':
+    def post(self, request, format=None):
+    #if request.method == 'POST':
         email = request.POST['email']
         upass = request.POST['password']
         user = authenticate(username=request.POST.get('email'), password=request.POST.get('password'))
@@ -52,7 +38,6 @@ def loginView(request):
                 login(request, user)
                 #user_serialized = serializers.serialize('json', [user])
                 #json_user_serialized = user_serialized[1:-1]
-                
                 userForColor = User.objects.get(username=request.POST.get('email'))
                 userColor = userForColor.useraccount.color   
                 return JsonResponse({
@@ -63,9 +48,7 @@ def loginView(request):
                     "email": user.email,
                     "userColor": userColor
                 })
-                
                 #return JsonResponse(user_serialized[1:-1], safe=False)
-
         else:
             print('Username dose not exist')
             return JsonResponse({

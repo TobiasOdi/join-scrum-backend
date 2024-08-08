@@ -117,3 +117,29 @@ class SaveEditedTaskView(APIView):
             )
             
         return Response({ "status": "OK - Task edited"})
+
+
+class SaveCreatedCategoryView(APIView):    
+    @csrf_exempt
+    def post(self, request):
+        newCategory = json.loads(request.body)
+        print('newCategory', newCategory)
+        
+        CategoryItem.objects.create(pk=taskData[0]['id']).update(
+            categoryName=newCategory['categoryName'], 
+            color=newCategory['color'],
+            categoryType=newCategory['categoryType'],
+        )  
+        
+        return Response({ "status": "OK - Category created"})
+    
+class DeleteCategoryView(APIView):
+    #authenticaiton_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    @csrf_exempt
+    def post(self, request):
+        currentCategory = json.loads(request.body)
+        print('currentCategory', currentCategory)
+        
+        CategoryItem.objects.filter(id=currentCategory['id']).delete()
+        return Response({ "status": "OK - Catgory deleted"})
